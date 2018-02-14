@@ -1,0 +1,12 @@
+#!/bin/sh
+
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+
+TARGETS="gmpmee vmgj vec vecj vcr vmn"
+for TARGET in $TARGETS;
+do
+    cd ${TARGET};
+    make -f Makefile.build clean
+    cd -
+done

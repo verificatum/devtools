@@ -1,0 +1,25 @@
+#!/bin/sh
+
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+
+FULL=verificatum-vmn-full
+
+rm -rf ${FULL}
+mkdir -p ${FULL}
+
+TARGETS="gmpmee vmgj vec vecj vcr vmn"
+for TARGET in $TARGETS;
+do
+    cd ${TARGET};
+    make -f Makefile.build clean
+    make -f Makefile.build dist
+    cd -
+    cp ${TARGET}/*.tar.gz ${FULL}/
+done
+
+cp ${SCRIPTPATH}/files/Makefile ${FULL}/
+cp ${SCRIPTPATH}/files/README ${FULL}/
+
+tar cvfz ${FULL}.tar.gz ${FULL}
+
