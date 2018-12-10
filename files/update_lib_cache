@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if test -f /sbin/ldconfig
+then
+    sudo /sbin/ldconfig -v
+fi
