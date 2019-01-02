@@ -1,14 +1,20 @@
 #!/bin/sh
 
+# Builds a single tar-ball that contains the distribution tar-balls of
+# all packages along with a Makefile that allows installing them in
+# the right order with a single command.
+
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-FULL=verificatum-vmn-full
+VMN_VERSION_STRING=`{ cat verificatum-vmn/.macros.m4; echo "VMN_VERSION_STRING"; } | m4`
+
+FULL=verificatum-vmn-${VMN_VERSION_STRING}-full
 
 rm -rf ${FULL}
 mkdir -p ${FULL}
 
-TARGETS="gmpmee vmgj vec vecj vcr vmn"
+TARGETS="verificatum-gmpmee verificatum-vmgj verificatum-vec verificatum-vecj verificatum-vcr verificatum-vmn"
 for TARGET in $TARGETS;
 do
     cd ${TARGET};
@@ -19,7 +25,9 @@ do
 done
 
 cp ${SCRIPTPATH}/files/Makefile ${FULL}/
-cp ${SCRIPTPATH}/files/README ${FULL}/
+cp ${SCRIPTPATH}/files/update_lib_cache ${FULL}/
+cp ${SCRIPTPATH}/files/README.md ${FULL}/
+cp ${SCRIPTPATH}/files/COPYING ${FULL}/
 
 tar cvfz ${FULL}.tar.gz ${FULL}
 

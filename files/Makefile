@@ -18,6 +18,7 @@
 
 .PHONY: install uninstall
 
+# We use the versions of the packages that are in this directory.
 GMPMEE_TAR=$(shell ls *.tar.gz | grep gmpmee)
 GMPMEE_DIR=$(shell echo $(GMPMEE_TAR) | sed "s/\.tar\.gz//")
 
@@ -36,21 +37,22 @@ VCR_DIR=$(shell echo $(VCR_TAR) | sed "s/\.tar\.gz//")
 VMN_TAR=$(shell ls *.tar.gz | grep vmn)
 VMN_DIR=$(shell echo $(VMN_TAR) | sed "s/\.tar\.gz//")
 
-VDIRS=$(GMPMEE_DIR) $(VMGJ_DIR) $(VEC_DIR) $(VECJ_DIR) $(VCR_DIR) $(VMN_DIR) 
-
 install_gmpmee: .install_gmpmee.stamp
 .install_gmpmee.stamp:
 	tar xvfz $(GMPMEE_TAR); cd ${GMPMEE_DIR}; ./configure; make; sudo make install
+	./update_lib_cache
 	touch .install_gmpmee.stamp
 
 install_vmgj: .install_vmgj.stamp
 .install_vmgj.stamp: .install_gmpmee.stamp
 	tar xvfz $(VMGJ_TAR); cd ${VMGJ_DIR}; ./configure; make; sudo make install
+	./update_lib_cache
 	touch .install_vmgj.stamp
 
 install_vec: .install_vec.stamp
 .install_vec.stamp:
 	tar xvfz $(VEC_TAR); cd ${VEC_DIR}; ./configure; make; sudo make install
+	./update_lib_cache
 	touch .install_vec.stamp
 
 install_vecj: .install_vecj.stamp
@@ -61,14 +63,16 @@ install_vecj: .install_vecj.stamp
 install_vcr: .install_vcr.stamp
 .install_vcr.stamp: .install_vmgj.stamp .install_vecj.stamp
 	tar xvfz $(VCR_TAR); cd ${VCR_DIR}; ./configure --enable-vmgj --enable-vecj; make; sudo make install
+	./update_lib_cache
+	vog -rndinit RandomDevice /dev/urandom
 	touch .install_vcr.stamp
 
-install_vmn:
+install_vmn: .install_vmn.stamp
 .install_vmn.stamp: .install_vcr.stamp
 	tar xvfz $(VMN_TAR); cd ${VMN_DIR}; ./configure; make; sudo make install
 	touch .install_vmn.stamp
 
-install: .install_vmn.stamp
+install: install_vmn
 
 check:
 	cd ${GMPMEE_DIR}; make check; cd -; done

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Runs "make clean" in all packages.
+
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 TARGETS=`cat ${SCRIPTPATH}/targets`

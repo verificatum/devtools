@@ -1,9 +1,12 @@
 #!/bin/sh
 
+# Runs a brutal cleanup of all packages that removes all files not in
+# the source.
+
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "$SCRIPT")
 
-TARGETS="gmpmee vmgj vec vecj vcr vmn"
+TARGETS="verificatum-gmpmee verificatum-vmgj verificatum-vec verificatum-vecj verificatum-vcr verificatum-vmn"
 for TARGET in $TARGETS;
 do
     cd ${TARGET};
