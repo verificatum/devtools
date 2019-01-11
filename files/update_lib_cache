@@ -20,9 +20,16 @@
 # A cache is supposed to return cached contents if any, and otherwise
 # look up information from the underlying data source. Unfortunately,
 # Linux does not do this for library locations, so we may have to run
-# an update explicitly and this has to be done as root.
+# an update explicitly and this has to be done as super user.
+#
+# Needless to say this works correctly, e.g., on OpenBSD, where this
+# command does somethings quite different, so we need to avoid running
+# it if we are not on a Linux.
 
-if test -f /sbin/ldconfig
+if test `uname` = "Linux";
 then
-    sudo /sbin/ldconfig -v
+    if test -f /sbin/ldconfig;
+    then
+	sudo /sbin/ldconfig -v
+    fi
 fi

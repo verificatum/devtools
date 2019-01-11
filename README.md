@@ -8,5 +8,5 @@ parent directory.
 This allows installing all packages with single command and is
 documented by a `README.md` file of its own. Thus, this package can be
 used to distribute the software in a platform independent conservative
-way or be used as instruction for how to set up a package for any
-given distribution.
+way for demonstration purposes or be used as instruction for how to
+set up a package for any given distribution.
